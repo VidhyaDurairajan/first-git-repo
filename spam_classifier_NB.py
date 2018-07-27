@@ -5,6 +5,7 @@ from pandas import DataFrame
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
 
+#READ FILES FROM PATH
 def readFiles(path):
     for root, dirnames, filenames in os.walk(path):
         for filename in filenames:
@@ -22,7 +23,7 @@ def readFiles(path):
             message = '\n'.join(lines)
             yield path, message
 
-
+# MAKE DATAFRAME CONTAINING MESSAGE AND CLASS
 def dataFrameFromDirectory(path, classification):
     rows = []
     index = []
@@ -32,8 +33,10 @@ def dataFrameFromDirectory(path, classification):
 
     return DataFrame(rows, index=index)
 
+# CREATING A DATAFRAME
 data = DataFrame({'message': [], 'class': []})
 
+# ADDING DATA INTO THE
 data = data.append(dataFrameFromDirectory('E:/NJIT/Data Science, Deep Learning and Machine Learning with Python/DataScience/DataScience-Python3/emails/spam','spam'))
 data = data.append(dataFrameFromDirectory('E:/NJIT/Data Science, Deep Learning and Machine Learning with Python/DataScience/DataScience-Python3/emails/ham','ham'))
 
@@ -46,7 +49,7 @@ classifier = MultinomialNB()
 targets = data['class'].values
 classifier.fit(counts, targets)
 
-examples = ['Free Viagra now!!!', "Hi Bob, how about a free game of golf tomorrow?"]
+examples = ['Slim Down - Guaranteed to lose 10-12 lbs in 30 days!!!', "Hi Bob, how about a free game of golf tomorrow?"]
 example_counts = vectorizer.transform(examples)
 predictions = classifier.predict(example_counts)
 print(predictions)
